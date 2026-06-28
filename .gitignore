@@ -17,3 +17,10 @@ flowkit.json
 *.exe~
 *.test
 *.prof
+
+# OpenCode config — not part of flowkit product
+.agents/
+skills-lock.json
+
+# Borrowed template — not part of flowkit product
+template_prd.md
