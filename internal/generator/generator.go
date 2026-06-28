@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -27,6 +28,10 @@ type fileSpec struct {
 	Cond     func(*config.Config) bool
 }
 
+func isJS(stack string) bool {
+	return stack == "next" || stack == "react" || stack == "vue" || stack == "nuxt" || stack == "node"
+}
+
 func filesFor(cfg *config.Config) []fileSpec {
 	ciTemplates := map[string]string{
 		"next":    "templates/ci/next.yml",
@@ -48,12 +53,18 @@ func filesFor(cfg *config.Config) []fileSpec {
 
 	precommitTmpl := "templates/hooks/pre-commit.sh"
 	precommitOut := ".husky/pre-commit"
-	if cfg.Stack != "next" && cfg.Stack != "react" && cfg.Stack != "vue" && cfg.Stack != "nuxt" && cfg.Stack != "node" {
+	if !isJS(cfg.Stack) {
 		precommitTmpl = "templates/hooks/pre-commit-nonjs.sh"
 		precommitOut = ".githooks/pre-commit"
 	}
 
-	return []fileSpec{
+	commitmsgOut := ".husky/commit-msg"
+	commitmsgTmpl := "templates/hooks/commit-msg.sh"
+	if !isJS(cfg.Stack) {
+		commitmsgOut = ".githooks/commit-msg"
+	}
+
+	ff := []fileSpec{
 		{
 			Template: workflowTmpl,
 			Output:   "WORKFLOW.md",
@@ -67,12 +78,52 @@ func filesFor(cfg *config.Config) []fileSpec {
 			Cond:     func(c *config.Config) bool { return c.Features.CI },
 		},
 		{
+			Template: "templates/ci/pr-check.yml",
+			Output:   ".github/workflows/pr-check.yml",
+			SkipMsg:  ".github/workflows/pr-check.yml already exists, skipping",
+			Cond:     func(c *config.Config) bool { return c.Features.PRCheck },
+		},
+		{
 			Template: precommitTmpl,
 			Output:   precommitOut,
 			SkipMsg:  fmt.Sprintf("%s already exists, skipping", precommitOut),
 			Cond:     func(c *config.Config) bool { return c.Features.CommitHooks },
 		},
+		{
+			Template: commitmsgTmpl,
+			Output:   commitmsgOut,
+			SkipMsg:  fmt.Sprintf("%s already exists, skipping", commitmsgOut),
+			Cond:     func(c *config.Config) bool { return c.Features.CommitHooks },
+		},
+		{
+			Template: "templates/commitlint.config.js",
+			Output:   "commitlint.config.js",
+			SkipMsg:  "commitlint.config.js already exists, skipping",
+			Cond:     func(c *config.Config) bool { return c.Features.CommitHooks && isJS(cfg.Stack) },
+		},
+		{
+			Template: "templates/lintstagedrc.json",
+			Output:   ".lintstagedrc.json",
+			SkipMsg:  ".lintstagedrc.json already exists, skipping",
+			Cond:     func(c *config.Config) bool { return c.Features.CommitHooks && isJS(cfg.Stack) },
+		},
 	}
+
+	saveConfig(cfg)
+	return ff
+}
+
+func saveConfig(cfg *config.Config) {
+	data, err := json.MarshalIndent(cfg, "", "  ")
+	if err != nil {
+		fmt.Printf("⚠  Warning: could not marshal config: %v\n", err)
+		return
+	}
+	if err := os.WriteFile("flowkit.json", data, 0644); err != nil {
+		fmt.Printf("⚠  Warning: could not save flowkit.json: %v\n", err)
+		return
+	}
+	fmt.Println("✓ flowkit.json (config saved)")
 }
 
 func GenerateAll(cfg *config.Config, force bool) error {
