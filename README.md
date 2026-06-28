@@ -5,7 +5,7 @@
 [![CI](https://github.com/DycandX/flowkit/actions/workflows/ci.yml/badge.svg)](https://github.com/DycandX/flowkit/actions/workflows/ci.yml)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/DycandX/flowkit)](go.mod)
 [![License](https://img.shields.io/github/license/DycandX/flowkit)](LICENSE)
-[![npm](https://img.shields.io/npm/v/flowkit)](https://www.npmjs.com/package/flowkit)
+[![npm](https://img.shields.io/npm/v/@dycandx/flowkit)](https://www.npmjs.com/package/@dycandx/flowkit)
 
 ```text
 $ flowkit init
@@ -78,13 +78,13 @@ go install github.com/DycandX/flowkit@latest
 ### npm
 
 ```bash
-npx flowkit init
+npx @dycandx/flowkit init
 ```
 
 Globally:
 
 ```bash
-npm install -g flowkit
+npm install -g @dycandx/flowkit
 ```
 
 ### Binary
