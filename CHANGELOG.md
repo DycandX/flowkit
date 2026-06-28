@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.1.1 (2026-06-28)
+
+### Fixed
+
+- Goreleaser name_template to match npm binary downloader
+- Scoped npm package `@dycandx/flowkit` (was blocked by `flow-kit` name conflict)
+- npm publish with `--access=public` for scoped packages
+
 ## v0.1.0 (2026-06-28)
 
 Initial release.
