@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.1.3 (2026-06-28)
+
+### Changed
+
+- promptui → charmbracelet/huh (no bell sound, better UX)
+- CI matrix: test on Windows + macOS
+
+### Added
+
+- `--version` flag
+- `--config` flag (re-read flowkit.json)
+- Project name sanitization (escape special chars)
+
 ## v0.1.2 (2026-06-28)
 
 ### Fixed

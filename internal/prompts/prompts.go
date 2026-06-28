@@ -1,10 +1,8 @@
 package prompts
 
 import (
-	"fmt"
-
+	"github.com/charmbracelet/huh"
 	"github.com/DycandX/flowkit/internal/config"
-	"github.com/manifoldco/promptui"
 )
 
 func RunInteractive(stack string) (*config.Config, error) {
@@ -19,39 +17,49 @@ func RunInteractive(stack string) (*config.Config, error) {
 			CommitHooks: true,
 			WorkflowDoc: true,
 		},
-		Commands: config.CommandsConfig{
-			Install: "npm install",
-			Dev:     "npm run dev",
-			Build:   "npm run build",
-			Lint:    "npm run lint",
-		},
+		Commands: DefaultCommands(stack),
 	}
 
-	var err error
+	form := huh.NewForm(
+		huh.NewGroup(
+			huh.NewInput().
+				Title("Project name").
+				Value(&cfg.ProjectName).
+				Validate(func(s string) error {
+					if s == "" {
+						return nil // allowed to be empty here, validated later
+					}
+					return nil
+				}),
 
-	cfg.ProjectName, err = promptString("Project name", "")
-	if err != nil {
+			huh.NewInput().
+				Title("Main branch").
+				Value(&cfg.MainBranch).
+				Description("Default: master"),
+
+			huh.NewSelect[string]().
+				Title("Language").
+				Options(
+					huh.NewOption("English", "en"),
+					huh.NewOption("Bahasa Indonesia", "id"),
+				).
+				Value(&cfg.Language),
+
+			huh.NewSelect[string]().
+				Title("Workflow style").
+				Options(
+					huh.NewOption("GitFlow", "gitflow"),
+					huh.NewOption("GitHub Flow", "github-flow"),
+					huh.NewOption("Trunk-Based", "trunk-based"),
+				).
+				Value(&cfg.WorkflowStyle),
+		),
+	)
+
+	if err := form.Run(); err != nil {
 		return nil, err
 	}
 
-	cfg.MainBranch, err = promptString("Main branch", cfg.MainBranch)
-	if err != nil {
-		return nil, err
-	}
-
-	lang, err := promptSelect("Language", []string{"en", "id"})
-	if err != nil {
-		return nil, err
-	}
-	cfg.Language = lang
-
-	style, err := promptSelect("Workflow style", []string{"gitflow", "github-flow", "trunk-based"})
-	if err != nil {
-		return nil, err
-	}
-	cfg.WorkflowStyle = style
-
-	fmt.Println()
 	return cfg, nil
 }
 
@@ -93,21 +101,4 @@ func DefaultCommands(stack string) config.CommandsConfig {
 			Lint:    "npm run lint",
 		}
 	}
-}
-
-func promptString(label, def string) (string, error) {
-	p := promptui.Prompt{
-		Label:   label,
-		Default: def,
-	}
-	return p.Run()
-}
-
-func promptSelect(label string, items []string) (string, error) {
-	p := promptui.Select{
-		Label: label,
-		Items: items,
-	}
-	_, result, err := p.Run()
-	return result, err
 }

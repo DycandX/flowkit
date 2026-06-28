@@ -1,6 +1,6 @@
 {
   "name": "@dycandx/flowkit",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Scaffold project workflow in one command — WORKFLOW.md, CI pipelines, and git hooks",
   "bin": {
     "flowkit": "./bin/run.js"
