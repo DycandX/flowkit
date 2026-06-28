@@ -20,30 +20,66 @@ type TemplateData struct {
 	WorkflowStyle string
 }
 
-var files = []struct {
+type fileSpec struct {
 	Template string
 	Output   string
 	SkipMsg  string
-}{
-	{
-		Template: "templates/workflows/gitflow/WORKFLOW.md",
-		Output:   "WORKFLOW.md",
-		SkipMsg:  "WORKFLOW.md already exists, skipping",
-	},
-	{
-		Template: "templates/ci/next.yml",
-		Output:   ".github/workflows/ci.yml",
-		SkipMsg:  ".github/workflows/ci.yml already exists, skipping",
-	},
-	{
-		Template: "templates/hooks/pre-commit.sh",
-		Output:   ".husky/pre-commit",
-		SkipMsg:  ".husky/pre-commit already exists, skipping",
-	},
+	Cond     func(*config.Config) bool
+}
+
+func filesFor(cfg *config.Config) []fileSpec {
+	ciTemplates := map[string]string{
+		"next":    "templates/ci/next.yml",
+		"react":   "templates/ci/react.yml",
+		"vue":     "templates/ci/node.yml",
+		"nuxt":    "templates/ci/next.yml",
+		"node":    "templates/ci/node.yml",
+		"go":      "templates/ci/go.yml",
+		"rust":    "templates/ci/rust.yml",
+		"python":  "templates/ci/python.yml",
+		"laravel": "templates/ci/laravel.yml",
+	}
+	ciTmpl, ok := ciTemplates[cfg.Stack]
+	if !ok {
+		ciTmpl = "templates/ci/generic.yml"
+	}
+
+	workflowTmpl := fmt.Sprintf("templates/workflows/%s/WORKFLOW.md", cfg.WorkflowStyle)
+
+	precommitTmpl := "templates/hooks/pre-commit.sh"
+	precommitOut := ".husky/pre-commit"
+	if cfg.Stack != "next" && cfg.Stack != "react" && cfg.Stack != "vue" && cfg.Stack != "nuxt" && cfg.Stack != "node" {
+		precommitTmpl = "templates/hooks/pre-commit-nonjs.sh"
+		precommitOut = ".githooks/pre-commit"
+	}
+
+	return []fileSpec{
+		{
+			Template: workflowTmpl,
+			Output:   "WORKFLOW.md",
+			SkipMsg:  "WORKFLOW.md already exists, skipping",
+			Cond:     func(c *config.Config) bool { return c.Features.WorkflowDoc },
+		},
+		{
+			Template: ciTmpl,
+			Output:   ".github/workflows/ci.yml",
+			SkipMsg:  ".github/workflows/ci.yml already exists, skipping",
+			Cond:     func(c *config.Config) bool { return c.Features.CI },
+		},
+		{
+			Template: precommitTmpl,
+			Output:   precommitOut,
+			SkipMsg:  fmt.Sprintf("%s already exists, skipping", precommitOut),
+			Cond:     func(c *config.Config) bool { return c.Features.CommitHooks },
+		},
+	}
 }
 
 func GenerateAll(cfg *config.Config, force bool) error {
-	for _, f := range files {
+	for _, f := range filesFor(cfg) {
+		if !f.Cond(cfg) {
+			continue
+		}
 		if err := generateFile(f.Template, f.Output, cfg, force, f.SkipMsg); err != nil {
 			return err
 		}
