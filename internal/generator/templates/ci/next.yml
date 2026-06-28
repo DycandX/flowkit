@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: ["{{.MainBranch}}", "develop", "feat/**", "fix/**"]
+    branches: ["<<.MainBranch>>", "develop", "feat/**", "fix/**"]
   pull_request:
-    branches: ["{{.MainBranch}}"]
+    branches: ["<<.MainBranch>>"]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -20,6 +20,6 @@ jobs:
           node-version: 20
           cache: npm
 
-      - run: {{.InstallCmd}}
-      - run: {{.LintCmd}}
-      - run: {{.BuildCmd}}
+      - run: <<.InstallCmd>>
+      - run: <<.LintCmd>>
+      - run: <<.BuildCmd>>

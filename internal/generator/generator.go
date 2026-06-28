@@ -162,7 +162,7 @@ func generateFile(tmplPath, outputPath string, cfg *config.Config, force bool, s
 		WorkflowStyle: cfg.WorkflowStyle,
 	}
 
-	tmpl, err := template.New(filepath.Base(tmplPath)).Parse(string(tmplContent))
+	tmpl, err := template.New(filepath.Base(tmplPath)).Delims("<<", ">>").Parse(string(tmplContent))
 	if err != nil {
 		return fmt.Errorf("parse template %s: %w", tmplPath, err)
 	}

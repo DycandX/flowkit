@@ -12,6 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # TODO: Configure your build steps below
-      # - run: {{.InstallCmd}}
-      # - run: {{.LintCmd}}
-      # - run: {{.BuildCmd}}
+      # - run: <<.InstallCmd>>
+      # - run: <<.LintCmd>>
+      # - run: <<.BuildCmd>>
