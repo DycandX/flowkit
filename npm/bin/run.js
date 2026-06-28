@@ -37,14 +37,21 @@ function binPath() {
 function download(url, dest) {
   return new Promise((resolve, reject) => {
     const file = createWriteStream(dest);
-    get(url, (res) => {
+    const req = get(url, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        file.close();
+        try { unlinkSync(dest); } catch {}
+        download(res.headers.location, dest).then(resolve, reject);
+        return;
+      }
       if (res.statusCode !== 200) {
         reject(new Error(`Download failed: HTTP ${res.statusCode}`));
         return;
       }
       res.pipe(file);
       file.on("finish", () => { file.close(); resolve(); });
-    }).on("error", (err) => { try { unlinkSync(dest); } catch {} reject(err); });
+    });
+    req.on("error", (err) => { try { unlinkSync(dest); } catch {} reject(err); });
   });
 }
 
