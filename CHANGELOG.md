@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.2 (2026-06-28)
+
+### Fixed
+
+- run.js HTTP 302 redirect handling for binary download
+
 ## v0.1.1 (2026-06-28)
 
 ### Fixed
