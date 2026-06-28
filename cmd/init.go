@@ -65,9 +65,16 @@ Run without flags for interactive mode, or pass --project-name for non-interacti
 		fmt.Println("  2. git add .")
 		fmt.Println("  3. git commit -m \"chore: add workflow scaffold\"")
 		fmt.Println("")
-		fmt.Println("  To activate git hooks:")
-		fmt.Println("    npm install           (JS/TS projects — activates Husky)")
-		fmt.Println("    git config core.hooksPath .githooks  (non-JS projects)")
+		isJS := cfg.Stack == "next" || cfg.Stack == "react" || cfg.Stack == "vue" || cfg.Stack == "nuxt" || cfg.Stack == "node"
+		if cfg.Features.CommitHooks {
+			if isJS {
+				fmt.Println("  To activate git hooks:")
+				fmt.Println("    npm install         (activates Husky)")
+			} else {
+				fmt.Println("  To activate git hooks:")
+				fmt.Println("    git config core.hooksPath .githooks")
+			}
+		}
 		return nil
 	},
 }
