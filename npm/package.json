@@ -1,0 +1,22 @@
+{
+  "name": "flowkit",
+  "version": "0.1.0",
+  "description": "Scaffold project workflow in one command — WORKFLOW.md, CI pipelines, and git hooks",
+  "bin": {
+    "flowkit": "./bin/run.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DycandX/flowkit.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "os": ["win32", "darwin", "linux"],
+  "cpu": ["x64", "arm64"],
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "tar-stream": "^3.1.7"
+  }
+}
