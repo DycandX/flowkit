@@ -1,7 +1,7 @@
 # 📑 flowkit – Product Requirements Document (PRD)
 
 > **PRD Version:** 1.0  
-> **Author:** [Nama Anda]  
+> **Author:** Zulvikar Kharisma Nur Muhammad
 > **Status:** DRAFT  
 > **Date:** 2026-06-28  
 > **Tech Stack Focus:** Go (core), Node.js/npm (wrapper), GitHub Actions, Husky
@@ -28,13 +28,13 @@
 
 ### 🛠️ Tech Stack Selection
 
-| Layer | Pilihan | Alasan |
-|-------|---------|--------|
-| **Core CLI** | Go (`text/template`, `embed`) | Single binary, cross-compile, no runtime, stdlib kuat buat CLI |
-| **npm wrapper** | Node.js (thin package.json) | Download binary sesuai platform dari GitHub Releases |
-| **Template engine** | Go `text/template` / `embed` | Built-in, no dependency |
-| **CI target** | GitHub Actions (`.yml`) | Paling universal, free |
-| **Git hooks target** | Husky (JS project) / shell hooks (non-JS) | Minimal setup, version controlled |
+| Layer                | Pilihan                                   | Alasan                                                         |
+| -------------------- | ----------------------------------------- | -------------------------------------------------------------- |
+| **Core CLI**         | Go (`text/template`, `embed`)             | Single binary, cross-compile, no runtime, stdlib kuat buat CLI |
+| **npm wrapper**      | Node.js (thin package.json)               | Download binary sesuai platform dari GitHub Releases           |
+| **Template engine**  | Go `text/template` / `embed`              | Built-in, no dependency                                        |
+| **CI target**        | GitHub Actions (`.yml`)                   | Paling universal, free                                         |
+| **Git hooks target** | Husky (JS project) / shell hooks (non-JS) | Minimal setup, version controlled                              |
 
 ### ⚠️ Distribution Constraints
 
@@ -120,15 +120,15 @@ graph TD
 
 ### Data Dictionary
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `version` | string | Yes | Schema version untuk migrasi config |
-| `project_name` | string | Yes | Nama project — dipakai di template header |
-| `main_branch` | string | Yes | `main` atau `master` |
-| `workflow_style` | enum | Yes | `gitflow` / `github-flow` / `trunk-based` |
-| `stack` | enum | Yes | `next` / `react` / `vue` / `nuxt` / `laravel` / `go` / `rust` / `python` / `node` / `unknown` |
-| `features` | object | Yes | Boolean flag tiap komponen yang mau digenerate |
-| `commands` | object | Yes | Perintah spesifik project — dipakai di template CI & WORKFLOW.md |
+| Field            | Type   | Required | Description                                                                                   |
+| ---------------- | ------ | -------- | --------------------------------------------------------------------------------------------- |
+| `version`        | string | Yes      | Schema version untuk migrasi config                                                           |
+| `project_name`   | string | Yes      | Nama project — dipakai di template header                                                     |
+| `main_branch`    | string | Yes      | `main` atau `master`                                                                          |
+| `workflow_style` | enum   | Yes      | `gitflow` / `github-flow` / `trunk-based`                                                     |
+| `stack`          | enum   | Yes      | `next` / `react` / `vue` / `nuxt` / `laravel` / `go` / `rust` / `python` / `node` / `unknown` |
+| `features`       | object | Yes      | Boolean flag tiap komponen yang mau digenerate                                                |
+| `commands`       | object | Yes      | Perintah spesifik project — dipakai di template CI & WORKFLOW.md                              |
 
 ---
 
@@ -261,6 +261,7 @@ graph TD
 - **Functional Requirements:**
 
 1. npm package `flowkit` dengan `bin` entry point:
+
    ```json
    {
      "name": "flowkit",
@@ -390,48 +391,48 @@ flowkit init \
 
 ### v0.1 — MVP (alpha)
 
-| Feature | Status |
-|---------|--------|
-| `flowkit init` interactive | ✅ |
-| Stack detection (5 stack) | ✅ |
-| GitFlow template only | ✅ |
-| Generate WORKFLOW.md | ✅ |
-| Generate CI (JS/TS only) | ✅ |
-| Generate pre-commit (JS/TS only) | ✅ |
-| Cross-compile (5 platforms) | ✅ |
-| Go binary release (GitHub) | ✅ |
+| Feature                          | Status |
+| -------------------------------- | ------ |
+| `flowkit init` interactive       | ✅     |
+| Stack detection (5 stack)        | ✅     |
+| GitFlow template only            | ✅     |
+| Generate WORKFLOW.md             | ✅     |
+| Generate CI (JS/TS only)         | ✅     |
+| Generate pre-commit (JS/TS only) | ✅     |
+| Cross-compile (5 platforms)      | ✅     |
+| Go binary release (GitHub)       | ✅     |
 
 ### v0.2 — Stabilisasi
 
-| Feature | Status |
-|---------|--------|
-| GitHub Flow + Trunk-Based | ✅ |
-| Non-JS stack CI templates (Go, Rust, Python, Laravel) | ✅ |
-| Non-JS git hooks (`.githooks/`) | ✅ |
-| `--force` flag | ✅ |
-| `--non-interactive` mode | ✅ |
-| `flowkit.json` config re-read | ✅ |
-| Tests + golden files | ✅ |
+| Feature                                               | Status |
+| ----------------------------------------------------- | ------ |
+| GitHub Flow + Trunk-Based                             | ✅     |
+| Non-JS stack CI templates (Go, Rust, Python, Laravel) | ✅     |
+| Non-JS git hooks (`.githooks/`)                       | ✅     |
+| `--force` flag                                        | ✅     |
+| `--non-interactive` mode                              | ✅     |
+| `flowkit.json` config re-read                         | ✅     |
+| Tests + golden files                                  | ✅     |
 
 ### v1.0 — Public Launch
 
-| Feature | Status |
-|---------|--------|
-| npm package (`npx flowkit`) | ✅ |
-| `goreleaser` auto-release | ✅ |
-| README + docs website | ✅ |
-| Demo GIF / recording | ✅ |
-| MIT License | ✅ |
+| Feature                     | Status |
+| --------------------------- | ------ |
+| npm package (`npx flowkit`) | ✅     |
+| `goreleaser` auto-release   | ✅     |
+| README + docs website       | ✅     |
+| Demo GIF / recording        | ✅     |
+| MIT License                 | ✅     |
 
 ### v2.0 — Future
 
-| Feature | Status |
-|---------|--------|
-| GitLab CI support | 📋 |
-| Dockerfile generation | 📋 |
-| Terraform/Vagrant dev env | 📋 |
-| VS Code extension | 📋 |
+| Feature                   | Status |
+| ------------------------- | ------ |
+| GitLab CI support         | 📋     |
+| Dockerfile generation     | 📋     |
+| Terraform/Vagrant dev env | 📋     |
+| VS Code extension         | 📋     |
 
 ---
 
-*End of PRD — flowkit*
+_End of PRD — flowkit_
