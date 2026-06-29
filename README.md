@@ -9,6 +9,8 @@
 
 ## Demo
 
+![flowkit demo](docs/demo.gif)
+
 ### Non-interactive (1 command)
 
 ```text
