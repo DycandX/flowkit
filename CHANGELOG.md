@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.2.2 (2026-06-29)
+
+### Fixed
+
+- CLI banner alignment (removed version from banner)
+- `--version` flag not showing correct version when built with ldflags
+
 ## v0.2.1 (2026-06-29)
 
 ### Fixed
