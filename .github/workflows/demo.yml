@@ -1,0 +1,47 @@
+name: Generate Demo GIF
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Install VHS
+        run: go install github.com/charmbracelet/vhs@latest
+
+      - name: Build flowkit binary
+        run: go build -o /tmp/flowkit .
+
+      - name: Setup demo project
+        run: |
+          mkdir -p /tmp/flowkit-demo
+          cd /tmp/flowkit-demo
+          git init
+          echo '{"dependencies":{"next":"14"}}' > package.json
+
+      - name: Generate GIF
+        run: |
+          export PATH="/tmp:$PATH"
+          cd /tmp/flowkit-demo
+          vhs < $GITHUB_WORKSPACE/docs/flowkit-demo.tape
+
+      - name: Upload GIF
+        uses: actions/upload-artifact@v4
+        with:
+          name: flowkit-demo
+          path: /tmp/flowkit-demo/docs/demo.gif
+
+      - name: Upload to docs/ (optional)
+        run: |
+          cp /tmp/flowkit-demo/docs/demo.gif $GITHUB_WORKSPACE/docs/demo.gif
