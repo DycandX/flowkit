@@ -208,6 +208,25 @@ flowkit init \
 
 **Aliases:** `--project-name` also accepts `-n`, `--main-branch` also `-b`, `--language` also `-l`, `--workflow-style` also `-w`.
 
+### Shell completion
+
+```bash
+# bash
+flowkit completion bash > /usr/local/share/bash-completion/completions/flowkit
+source ~/.bashrc
+
+# zsh
+flowkit completion zsh > /usr/local/share/zsh/site-functions/_flowkit
+source ~/.zshrc
+
+# fish
+flowkit completion fish > ~/.config/fish/completions/flowkit.fish
+
+# PowerShell
+flowkit completion powershell > flowkit.ps1
+./flowkit.ps1
+```
+
 ## What Gets Generated
 
 ```
