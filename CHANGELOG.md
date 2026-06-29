@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.2.1 (2026-06-29)
+
+### Fixed
+
+- Dynamic version in CLI banner (remove hardcoded v0.1.3)
+- Banner alignment with version text
+
 ## v0.2.0 (2026-06-29)
 
 ### Added
