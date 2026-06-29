@@ -7,22 +7,75 @@
 [![License](https://img.shields.io/github/license/DycandX/flowkit)](LICENSE)
 [![npm](https://img.shields.io/npm/v/@dycandx/flowkit)](https://www.npmjs.com/package/@dycandx/flowkit)
 
+## Demo
+
+### Non-interactive (1 command)
+
 ```text
-$ flowkit init
+$ mkdir my-app && cd my-app
+$ git init
+$ echo '{"dependencies":{"next":"14"}}' > package.json
 
-? Project name: my-app
-? Main branch: master
-? Language: en
-? Workflow style: GitFlow
+$ npx @dycandx/flowkit init -n "my-app" -b master -l en -w gitflow
 
+→ Detected stack: next
+
+Generating workflow files...
+✓ flowkit.json (config saved)
 ✓ WORKFLOW.md
 ✓ .github/workflows/ci.yml
 ✓ .github/workflows/pr-check.yml
 ✓ .husky/pre-commit
 ✓ .husky/commit-msg
 ✓ commitlint.config.js
-✓ flowkit.json
+✓ .lintstagedrc.json
+
+✅ Done! Next steps:
+  1. Review generated files
+  2. git add .
+  3. git commit -m "chore: add workflow scaffold"
+
+  To activate git hooks:
+    npm install         (activates Husky)
 ```
+
+### Interactive (with prompts)
+
+```text
+$ npx @dycandx/flowkit init
+
+? Project name:  my-app
+? Main branch:   master
+? Language:      English
+? Workflow style: GitFlow
+
+✓ WORKFLOW.md
+✓ .github/workflows/ci.yml
+✓ .github/workflows/pr-check.yml
+✓ .husky/pre-commit
+✓ flowkit.json
+
+✅ Done!
+```
+
+### Output tree
+
+```
+my-project/
+├── WORKFLOW.md                    Git workflow documentation
+├── .github/workflows/ci.yml       CI pipeline (stack-aware)
+├── .github/workflows/pr-check.yml Branch & commit convention checks
+├── .husky/pre-commit              Pre-commit linting (JS/Node)
+├── .husky/commit-msg              Commit message validation (JS/Node)
+├── .githooks/pre-commit           Pre-commit check (non-JS)
+├── .githooks/commit-msg           Commit message check (non-JS)
+├── commitlint.config.js           Conventional commit rules (JS)
+├── .lintstagedrc.json             Lint-staged config (JS)
+└── flowkit.json                   Saved config for re-run
+```
+
+> 💡 Want a live GIF? Record with [terminalizer](https://github.com/faressoft/terminalizer),
+> [vhs](https://github.com/charmbracelet/vhs), or [asciinema](https://asciinema.org).
 
 ## Table of Contents
 
