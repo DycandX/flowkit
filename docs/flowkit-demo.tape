@@ -18,9 +18,15 @@ Sleep 300ms
 Enter
 Sleep 1s
 
-# Step 3: Create package.json
-Type "echo '{\"dependencies\":{\"next\":\"14\"}}' > package.json"
-Sleep 300ms
+# Step 3: Create package.json (heredoc — no backslash needed)
+Type "cat > package.json << 'EOF'"
+Sleep 100ms
+Enter
+Type '{"dependencies":{"next":"14"}}'
+Sleep 100ms
+Enter
+Type "EOF"
+Sleep 100ms
 Enter
 Sleep 1s
 
