@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.2.0 (2026-06-29)
+
+### Added
+
+- Demo GIF, Issue Templates, E2E Tests
+- Shell auto-completion (bash/zsh/fish/powershell)
+- GitHub Discussions enabled
+- Test coverage > 80% (detector 91.9%, generator 82.3%)
+
+### Fixed
+
+- Issue templates format (YAML → Markdown)
+- Banner polish + init --help examples
+
 ## v0.1.3 (2026-06-28)
 
 ### Changed
