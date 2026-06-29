@@ -31,7 +31,24 @@ var initCmd = &cobra.Command{
 
 Run without flags for interactive mode.
 Pass --project-name for non-interactive.
-Pass --config to re-read a saved flowkit.json.`,
+Pass --config to re-read a saved flowkit.json.
+
+Examples:
+  flowkit init                         Interactive mode
+  flowkit init -n "my-app"             Non-interactive, all defaults
+  flowkit init -n "app" -w github-flow GitHub Flow, no CI
+  flowkit init --config flowkit.json   Re-run with saved config`,
+	Example: `  # Interactive mode
+  flowkit init
+
+  # Quick setup
+  flowkit init -n "my-app"
+
+  # GitHub Flow with no CI
+  flowkit init -n "app" -w github-flow --ci=false
+
+  # Re-run with saved config
+  flowkit init --config flowkit.json --force`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if err := checkPrerequisites(); err != nil {
 			return err
@@ -130,13 +147,13 @@ func sanitizeName(name string) string {
 }
 
 func init() {
-	initCmd.Flags().BoolVarP(&force, "force", "f", false, "Overwrite existing files")
-	initCmd.Flags().StringVar(&configPath, "config", "", "Path to flowkit.json (re-read saved config)")
 	initCmd.Flags().StringVarP(&projectName, "project-name", "n", "", "Project name (enables non-interactive mode)")
 	initCmd.Flags().StringVarP(&mainBranch, "main-branch", "b", "master", "Main branch name")
 	initCmd.Flags().StringVarP(&language, "language", "l", "en", "Language (en or id)")
 	initCmd.Flags().StringVarP(&workflowStyle, "workflow-style", "w", "gitflow", "Workflow style (gitflow, github-flow, trunk-based)")
 	initCmd.Flags().BoolVar(&ciEnabled, "ci", true, "Generate CI pipeline")
 	initCmd.Flags().BoolVar(&hooksEnabled, "hooks", true, "Generate git hooks")
+	initCmd.Flags().BoolVarP(&force, "force", "f", false, "Overwrite existing files")
+	initCmd.Flags().StringVar(&configPath, "config", "", "Path to flowkit.json (re-read saved config)")
 	rootCmd.AddCommand(initCmd)
 }

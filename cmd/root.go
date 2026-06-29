@@ -10,10 +10,10 @@ import (
 var Version = "dev"
 
 const banner = `
- ╔══════════════════════════════════════╗
- ║            flowkit                    ║
- ║    Workflow scaffold in 1 command     ║
- ╚══════════════════════════════════════╝
+  ╔══════════════════════════════════════╗
+  ║            flowkit   v0.1.3          ║
+  ║    Workflow scaffold in 1 command     ║
+  ╚══════════════════════════════════════╝
 `
 
 var rootCmd = &cobra.Command{
