@@ -192,11 +192,18 @@ Usage:
   flowkit init [flags]
 
 Flags:
-  -f, --force   Overwrite existing files
-  -h, --help    Help for init
+  -n, --project-name string    Project name (enables non-interactive)
+  -b, --main-branch string     Main branch name (default "master")
+  -l, --language string        Language en or id (default "en")
+  -w, --workflow-style string  GitFlow, GitHub Flow, Trunk-Based
+      --ci                     Generate CI pipeline (default true)
+      --hooks                  Generate git hooks (default true)
+  -f, --force                  Overwrite existing files
+      --config string          Path to flowkit.json (re-read saved config)
+  -h, --help                   Help for init
 ```
 
-### `flowkit init --non-interactive`
+### Non-interactive
 
 ```bash
 flowkit init \
@@ -205,8 +212,6 @@ flowkit init \
   --language en \
   --workflow-style gitflow
 ```
-
-**Aliases:** `--project-name` also accepts `-n`, `--main-branch` also `-b`, `--language` also `-l`, `--workflow-style` also `-w`.
 
 ### Shell completion
 
@@ -248,11 +253,8 @@ my-project/
 │
 ├── commitlint.config.js           Conventional commit rules (JS only)
 ├── .lintstagedrc.json             Lint-staged configuration (JS only)
-├── flowkit.json                   Saved config for re-generation
-└── WORKFLOW.md                    Reusable workflow doc
+└── flowkit.json                   Saved config for re-generation
 ```
-
-### output example
 
 **`WORKFLOW.md`:** Branching diagram, naming conventions, commit rules, step-by-step task workflow, code quality checklist — all customized with your project name and commands.
 
@@ -374,7 +376,7 @@ go vet ./...                # static analysis
 
 ## Acknowledgments
 
-Inspired by the need for consistent, enforceable git workflows across projects of all stacks. Built with Go, cobra, and promptui.
+Inspired by the need for consistent, enforceable git workflows across projects of all stacks. Built with Go, cobra, and huh.
 
 ## License
 
